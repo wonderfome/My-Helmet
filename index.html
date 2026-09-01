@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Damaged Helmet</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #0a0d14;
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+        }
+
+        /* หน้าต่างแสดงสถานะการโหลดโมเดล */
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00f0ff;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: rgba(13, 17, 23, 0.85);
+            padding: 20px 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.15);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* ปรับแต่ง GUI ของ lil-gui ให้เป็นสไตล์ Cyberpunk Glassmorphism */
+        .lil-gui {
+            --background-color: rgba(13, 17, 23, 0.85) !important;
+            --text-color: #c9d1d9 !important;
+            --title-background-color: rgba(22, 27, 34, 0.95) !important;
+            --widget-color: #21262d !important;
+            --hover-color: #30363d !important;
+            --focus-color: #58a6ff !important;
+            --number-color: #00f0ff !important;
+            --string-color: #7ee787 !important;
+            
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(12px) !important;
+            margin: 15px !important;
+        }
+
+        .lil-gui .title {
+            font-weight: 600 !important;
+            letter-spacing: 0.5px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #00f0ff !important;
+        }
+
+        .lil-gui .controller {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .lil-gui .slider {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-radius: 4px !important;
+        }
+
+        .lil-gui .slider-fg {
+            background: linear-gradient(90deg, #00f0ff, #3b82f6) !important;
+        }
+
+        .lil-gui input[type="text"] {
+            background: rgba(0, 0, 0, 0.3) !important;
+            color: #00f0ff !important;
+            border-radius: 4px !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ข้อความแสดงสถานะโหลด -->
+    <div id="loading">กำลังเตรียมความพร้อมระบบ PBR...</div>
+
+    <!-- เรียกใช้งาน Script หลักของ Three.js (รองรับระบบ ES Modules) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- รันไฟล์ main.js ของโปรเจกต์ -->
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
