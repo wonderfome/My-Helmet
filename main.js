@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 // 1. Scene, Camera, Renderer
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x010205);
+
+
+
+
 
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 1.2, 3.2);
@@ -15,14 +18,35 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.5;
+renderer.toneMappingExposure = 1.2;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-// 2. Environment Map (PBR Reflections)
+// 2. โหลดภาพ HDR "Table Mountain 2" จาก Poly Haven ผ่าน Direct Link ทันที (ไม่ต้องโหลดไฟล์เก็บในเครื่อง)
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
-scene.environment = pmremGenerator.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+pmremGenerator.compileEquirectangularShader();
+
+// ลิงก์ตรงไฟล์ EXR ความละเอียด 1k ของภาพ Table Mountain 2 จาก Poly Haven
+const hdrUrl = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/1k/table_mountain_2_1k.exr';
+
+new EXRLoader().load(
+    hdrUrl,
+    (texture) => {
+        const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+
+        // ตั้งค่าให้เป็นภาพฉากหลังและแสงสะท้อนบนหมวกกับพื้น
+        scene.background = envMap;
+        scene.environment = envMap;
+
+        texture.dispose();
+        pmremGenerator.dispose();
+    },
+    undefined,
+    (error) => {
+        console.error('เกิดข้อผิดพลาดในการโหลดไฟล์ EXR:', error);
+    }
+);
 
 // 3. Controls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -52,7 +76,7 @@ const starsMaterial = new THREE.PointsMaterial({
 const starField = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(starField);
 
-// 5. Lighting ส่องประกายเมทัลลิก
+// 5. Lighting
 const ambientLight = new THREE.AmbientLight(0x1a2639, 1.0);
 scene.add(ambientLight);
 
@@ -72,13 +96,12 @@ const purpleLight = new THREE.PointLight(0x9d00ff, 4.0, 12);
 purpleLight.position.set(3, 2, -3);
 scene.add(purpleLight);
 
-// 6. พื้นโลหะ Sci-Fi พรีเมียม (สร้างลายตารางไฮเทคด้วย Canvas Texture สดๆ คมชัด ไม่มีเบลอ)
+// 6. พื้นโลหะ Sci-Fi พรีเมียม
 const canvas = document.createElement('canvas');
 canvas.width = 512;
 canvas.height = 512;
 const ctx = canvas.getContext('2d');
 
-// วาดลวดลายแผ่นเหล็กและช่องตาราง
 ctx.fillStyle = '#111726';
 ctx.fillRect(0, 0, 512, 512);
 
@@ -86,7 +109,6 @@ ctx.strokeStyle = '#25354d';
 ctx.lineWidth = 6;
 ctx.strokeRect(0, 0, 512, 512);
 
-// เส้นตารางย่อยภายใน
 ctx.lineWidth = 2;
 for(let i = 64; i < 512; i += 64) {
     ctx.beginPath();
@@ -104,18 +126,17 @@ const floorGeo = new THREE.PlaneGeometry(50, 50);
 const floorMat = new THREE.MeshStandardMaterial({ 
     map: customFloorTex,
     color: 0x889bbd,
-    roughness: 0.18,       // เงากำลังดี สะท้อนแสงไฟนีออนเป็นทางสวยงาม
-    metalness: 0.92,       // ความเป็นโลหะสูง
+    roughness: 0.18,      
+    metalness: 0.92,      
     bumpMap: customFloorTex,
     bumpScale: 0.03
 });
 const floor = new THREE.Mesh(floorGeo, floorMat);
 floor.rotation.x = -Math.PI / 2;
-floor.position.y = -0.32;  // วางระดับพอดีกับหมวกเป๊ะ
+floor.position.y = -0.32;  
 floor.receiveShadow = true;
 scene.add(floor);
 
-// เพิ่ม Grid เรืองแสงซ้อนทับอีกชั้นเพิ่มความล้ำ
 const grid = new THREE.GridHelper(50, 50, 0x00f0ff, 0x1f304f);
 grid.position.y = -0.31;
 grid.material.transparent = true;
@@ -132,8 +153,8 @@ loader.load(
     'DamagedHelmet.glb',
     function (gltf) {
         helmetModel = gltf.scene;
-        helmetModel.position.set(0, 0.59, 0); 
-        helmetModel.scale.set(1, 1, 1);
+        helmetModel.position.set(0, 5, 0); 
+        helmetModel.scale.set(6, 6, 6);
         
         helmetModel.traverse((child) => {
             if (child.isMesh) {
