@@ -15,6 +15,131 @@
             }
         }
     </script>
+
+    <style>
+
+/* ธีมมินิมอล ขาว-แดง มุมโค้งมน เรียบง่าย (แก้ไขสีหัวข้อให้มองเห็นชัดเจน) */
+.lil-gui.root {
+    --background-color: rgba(255, 255, 255, 0.92) !important;
+    --text-color: #7f9ed0 !important;
+    --title-background-color: #dc2626 !important;
+    --title-text-color: #602a2a !important;
+    --widget-color: rgba(34, 40, 46, 0.9) !important;
+    --hover-color: #ef4444 !important;
+    --focus-color: #dc2626 !important;
+    --number-color: #dc2626 !important;
+    
+    width: 340px !important;
+    max-width: 100% !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(220, 38, 38, 0.2) !important;
+    backdrop-filter: blur(12px);
+}
+
+.lil-gui .lil-gui {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+/* แก้ปัญหาหัวข้อซ้อนทับ สีตัวหนังสือกลืนกับพื้นหลัง และทำมุมโค้งด้านบน */
+.lil-gui .title {
+    font-weight: 600 !important;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    padding: 12px 16px !important;
+    line-height: 1.5 !important;
+    height: auto !important;
+    color: #0f172a !important; /* กำหนดสีตัวหนังสือหัวข้อให้เข้มและมองเห็นชัดเจนทันที */
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* หัวข้อหลักด้านบนสุดให้เป็นสีแดง */
+.lil-gui.root > .title {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.lil-gui .controller {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(152, 109, 109, 0.04);
+    padding: 8px 6px;
+}
+
+/* จัดสัดส่วนชื่อหัวข้อกับสไลเดอร์ให้พอดี ไม่เบียดกัน */
+.lil-gui .name {
+    width: 45% !important;
+    color: #c00000 !important;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.lil-gui .widget {
+    width: 55% !important;
+}
+
+.lil-gui .slider {
+    background-color: #04203d !important;
+    border-radius: 6px !important;
+    overflow: hidden;
+}
+
+.lil-gui .slider {
+    background-color: #aa6178 !important; /* สีพื้นหลังรางสไลเดอร์ (ปรับให้สว่างขึ้นได้) */
+    border-radius: 6px !important;
+    overflow: hidden;
+}
+
+/* เปลี่ยนสีพื้นหลังกล่องตัวเลขด้านขวา */
+.lil-gui input[type="text"] {
+    background-color: #2e2a2a !important; /* สีพื้นหลังกล่องตัวเลข */
+    color: #0b0707 !important;            /* สีตัวเลขด้านใน */
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* เปลี่ยนสีเส้นขีดบอกตำแหน่งบนสไลเดอร์ */
+.lil-gui .slider-fg {
+    border-right-color: #dc2626 !important; 
+}
+
+.lil-gui .slider-fg {
+    background-color: #dc2626 !important; /* สีแถบวิ่ง (ปัจจุบันเป็นสีแดง) */
+    border-right-color: #4f2d2d !important; /* สีเส้นขีดแบ่ง */
+    border-radius: 6px !important;
+}
+
+.lil-gui input[type="text"] {
+    background-color: #ffffff !important; /* สีพื้นหลังช่องตัวเลข */
+    color: #dc2626 !important;            /* สีตัวเลข */
+    border-radius: 6px !important;
+    border: 1px solid #2f496a !important;
+}
+
+.lil-gui .slider-fg {
+    background-color: #dc2626 !important; /* แถบสไลเดอร์สีแดงสด */
+    border-radius: 6px !important;
+}
+
+.lil-gui input[type="text"] {
+    background-color: #ffffff !important;
+    color: #dc2626 !important;
+    border-radius: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    font-family: inherit;
+    padding: 3px 6px;
+    font-weight: 600;
+}
+</style>
+</style>
 </head>
 <body>
     <!-- ข้อความแจ้งเตือนขณะโหลดโมเดล -->
